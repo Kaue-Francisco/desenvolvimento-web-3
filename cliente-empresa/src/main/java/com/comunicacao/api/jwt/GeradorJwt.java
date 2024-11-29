@@ -1,0 +1,22 @@
+package com.comunicacao.api.jwt;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+import java.util.Date;
+
+class GeradorJwt {
+	private String assinatura;
+	private Date expiracao;
+
+	public GeradorJwt(String assinatura, long duracao) {
+		this.assinatura = assinatura;
+		this.expiracao = new Date(System.currentTimeMillis() + duracao);
+	}
+
+	public String gerarJwt(String nivelDeAcesso) {
+		String jwt = Jwts.builder().setSubject(nivelDeAcesso).setExpiration(this.expiracao)
+				.signWith(SignatureAlgorithm.HS512, this.assinatura.getBytes()).compact();
+		return jwt;
+	}
+}
